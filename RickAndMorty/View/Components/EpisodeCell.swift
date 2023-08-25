@@ -38,8 +38,3 @@ struct EpisodeCell: View {
     }
 }
 
-//struct EpisodeCell_Previews: PreviewProvider {
-//    static var previews: some View {
-//        EpisodeCell(episode: Episode(id: 1, name: "The Vat of Acid Episode", airDate: "May 17, 2020", episode: "S04E08"))
-//    }
-//}

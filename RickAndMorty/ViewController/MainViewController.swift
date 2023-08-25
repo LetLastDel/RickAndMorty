@@ -9,17 +9,21 @@ import UIKit
 import SwiftUI
 
 class MainViewController: UIViewController {
-
+    
     let mainView = MainView()
     var char: [Results] = []
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view = mainView
         mainView.collectionView.delegate = self
         mainView.collectionView.dataSource = self
-        
+        fetchInfo()
+    }
+    
+    
+    func fetchInfo(){
         Task{
             let apiResponce = try await NetworkService.shared.getInfo(end: EndPoints.characher.rawValue, epis: "") as [APIResponse]
             var charInfo: [Results] = []
@@ -30,16 +34,15 @@ class MainViewController: UIViewController {
                 self.char = charInfo
                 self.mainView.collectionView.reloadData()
             }
-            }
         }
     }
+}
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         char.count
     }
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CharacterCell.reuseID, for: indexPath) as! CharacterCell
         let characterInfo = char[indexPath.item]
@@ -51,8 +54,8 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selected = char[indexPath.row]
-        let charInfoView = CharacterInfoView(viewModel: CharacterViewModel(char: selected))
-        let hostingController = UIHostingController(rootView: charInfoView)
-        navigationController?.pushViewController(hostingController, animated: true)
+        self.navigationController?.pushViewController(UIHostingController(rootView: CharacterInfoView(viewModel: CharacterViewModel(char: selected))), animated: true)
+        navigationController?.navigationBar.barTintColor = .clear
+        navigationController?.navigationBar.tintColor = .white
     }
 }

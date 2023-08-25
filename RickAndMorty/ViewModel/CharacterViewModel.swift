@@ -8,17 +8,10 @@
 import Foundation
 
 class CharacterViewModel: ObservableObject {
-    @Published var coordinator: Coordinator?
     @Published var char: Results
     
     init(char: Results){
         self.char = char
-        checkCoordinator()
-    }
-    
-    func checkCoordinator() {
-        guard let character = coordinator?.selectedValue else { return }
-        self.char = character
     }
 }
 
